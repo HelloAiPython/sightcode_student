@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+    SightCode|首页
+
+{% endblock %}
+{% block nav_index_active %}active{% endblock %}
+{% block content %}
+    <div class="img-background">
+        <link rel="stylesheet" href="{% static "/CSS/index.css" %}">
+        <img src="{% static "images/SIGHT-01.png" %}" alt="">
+        <!--<h1 class="index-content">欢迎SightCode学员</h1>-->
+    </div>
+{% endblock %}

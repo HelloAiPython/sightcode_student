@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    习题
+{% endblock %}
+{% block nav_article_active %}active{% endblock %}
+{% block header_extends %}
+    <link rel="stylesheet" href="{% static 'CSS/article.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-8 col-md-8">
+                <div class="panel panel-default">
+                    <div class="panel-heading">{% block article_list_title %}习题列表(一共有{{ articles|length }}道习题){% endblock %}</div>
+                        <div class="panel-body">
+                            {% for article in articles %}
+                                <div class="article">
+                                    <h3><a href="{% url 'article_detail' article.pk %}">{{ article.title }}</a></h3>
+                                        <p class="article-info">
+                                            <span class="glyphicon glyphicon-tag">{{ article.article_type }}</span>
+                                            <span class="glyphicon glyphicon-time">{{ article.create_time|date:'Y-m-d' }}</span>
+                                        </p>
+                                        <p>{{ article.content|striptags|truncatechars:20 }}</p>
+                                </div>
+                            {% empty %}
+                                <div class="article">
+                                    <h3>暂无习题</h3>
+                            {% endfor %}
+                                </div>
+                            </div>
+                        <div>
+                          <ul class="pagination">
+                            <li>
+                                {% if page_of_articles.has_previous %}
+                                    <a href="?page={{ page_of_articles.previous_page_number }}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                {% else %}
+                                    <span aria-hidden="true">&laquo;</span>
+                                {% endif %}
+                            </li>
+                              {% for page_num in page_range %}
+                                  {% if page_num == page_of_articles.number %}
+                                  <li class="active"><a href="?page={{ page_num }}">{{ page_num }}</a></li>
+                                  {% else %}
+                                  <li><a href="?page={{ page_num }}">{{ page_num }}</a></li>
+                                  {% endif %}
+                              {% endfor %}
+                            <li>
+                                {% if page_of_articles.has_next %}
+                                    <a href="?page={{ page_of_articles.next_page_number }}" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                {% else %}
+                                    <span aria-hidden="true">&raquo;</span>
+                                {% endif %}
+                            </li>
+                          </ul>
+                        </div>
+                        </div>
+                    <div class="hidden-xs col-sm-4 col-md-4">
+                        <div class="panel panel-default">
+                             <div class="panel-heading">习题分类</div>
+                             <div class="panel-body">
+                                <ul class="article-types">
+                                    {% for article_tp in article_types %}
+                                            <li><a href="{% url 'article_with_type' article_tp.pk %}">{{ article_tp.type_name }}</a> </li>
+                                    {% empty %}
+                                        <li>---暂无分类---</li>
+                                    {% endfor %}
+                                </ul>
+                             </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+    </div>
+{% endblock %}
